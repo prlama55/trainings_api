@@ -2,9 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "description": "MERN stack api",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
-    "start": "node ./src/server.js",
+    "start": "nodemon server",
     "test": "test"
   },
   "keywords": [
@@ -22,7 +22,9 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "mongoose": "^5.9.16"
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
