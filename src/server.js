@@ -5,11 +5,17 @@ const { logger } = require("./middlewares");
 const app = express();
 app.use(bodyParser.json());
 app.use(logger);
+
+app.use(express.static(__dirname + "/assets"));
+app.set("views", __dirname + "/views");
+app.engine("html", require("ejs").renderFile);
+app.set("view engine", "html");
+console.log("__dirname===", __dirname);
 require("./routes")(app);
 
 app.get("/*", (req, res) => {
   console.log("Home page===", req.appId);
-  res.send("Welcome!");
+  res.render("index.html");
 });
 app.get("/*/*", (req, res) => {
   res.status(403).send("Page not found");
