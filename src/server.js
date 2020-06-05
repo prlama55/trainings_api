@@ -35,5 +35,5 @@ app.get("/*/*", (req, res) => {
   res.status(403).send("Page not found");
 });
 app.listen(APP_PORT, () => {
-  console.log(`App is running at http://localhost: ${APP_PORT}`);
+  console.log(`App is running at http://localhost:${APP_PORT}`);
 });
