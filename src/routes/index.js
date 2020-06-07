@@ -8,5 +8,6 @@ module.exports = (app) => {
 
   app
     .get("/api/users/:id", controllers.userDetails)
-    .put("/api/users/:id", controllers.userUpdate);
+    .put("/api/users/:id", controllers.userUpdate)
+    .delete("/api/users/:id", controllers.deleteUser);
 };
