@@ -1,5 +1,12 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
+const { sign, verify } = require("jsonwebtoken");
+const {
+  ACCESS_TOKEN_EXP,
+  JWT_ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN,
+  JWT_REFRESH_TOKEN_SECRET,
+} = require("../config");
 exports.userList = async (req, res) => {
   const list = await User.find();
   res.status(200).send({
@@ -65,11 +72,44 @@ exports.deleteUser = async (req, res) => {
   });
 };
 
-exports.login=(req, res)=>{
-  const user = await User.findOne({username: req.body.username});
+exports.login = async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
   console.log("user.password====", user.password);
-  bcrypt.compare(req.body.password, user.password, (err, matched) => {
-    if (err) throw new Error("Password not matched");
-    console.log("password matched===", matched);
-  });
-}
+
+  if (user) {
+    let token;
+    let refreshToken;
+    bcrypt.compare(req.body.password, user.password, (err, matched) => {
+      if (err) throw new Error("Password not matched");
+      console.log("password matched===", matched);
+      if (matched) {
+        token = sign(
+          { userId: user.id, type: "accessToken" },
+          JWT_ACCESS_TOKEN_SECRET,
+          {
+            expiresIn: ACCESS_TOKEN_EXP,
+          }
+        );
+        refreshToken = sign(
+          { userId: user.id, type: "refreshToken" },
+          JWT_REFRESH_TOKEN_SECRET,
+          {
+            expiresIn: REFRESH_TOKEN,
+          }
+        );
+        console.log("token===========", token);
+        //res.rend("Login");
+      }
+      res.status(200).send({
+        accessToken: token,
+        username: user.username,
+        expiresIn: ACCESS_TOKEN_EXP,
+        refreshToken: refreshToken,
+        userType: user.userType ? user.userType : "",
+      });
+      res.cookie("refresh", refreshToken);
+    });
+  } else {
+    throw new Error("Unauthorized");
+  }
+};
