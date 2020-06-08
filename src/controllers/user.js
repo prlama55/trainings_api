@@ -107,7 +107,6 @@ exports.login = async (req, res) => {
         refreshToken: refreshToken,
         userType: user.userType ? user.userType : "",
       });
-      res.cookie("refresh", refreshToken);
     });
   } else {
     throw new Error("Unauthorized");

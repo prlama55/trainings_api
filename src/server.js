@@ -1,12 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { APP_PORT, DB_URL } = require("./config");
-const { logger, auth } = require("./middlewares");
+const { logger } = require("./middlewares");
 const mongoose = require("mongoose");
 const app = express();
 app.use(bodyParser.json());
 app.use(logger);
-// app.use(auth);
 
 // Mongoose connection
 mongoose.Promise = global.Promise;
