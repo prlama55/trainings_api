@@ -4,10 +4,6 @@ const { User } = require("../models");
 exports.auth = (req, res, next) => {
   const authorization = req.headers.authorization;
   console.log("===========", req.path);
-  if (req.path === "/api/login") {
-    next();
-    return;
-  }
   if (!authorization) {
     throw new Error("Unathorized");
   }
@@ -27,5 +23,14 @@ exports.auth = (req, res, next) => {
     }
   });
 
+  next();
+};
+
+// exports.roleChecker = (roles) => (req, res, next) => {
+//   console.log("============", roles);
+// };
+
+exports.roleChecker = (req, res, next) => {
+  console.log("Role checker====");
   next();
 };
